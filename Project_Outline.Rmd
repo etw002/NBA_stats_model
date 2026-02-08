@@ -1,0 +1,16 @@
+---
+title: "Project_outline"
+output: html_document
+date: "2026-02-08"
+---
+## Model
+- games played(frequency) $\times$ stats per game(severity) = total points per season
+
+## frequency - games played
+- negative binomial or poisson glm
+- predictors - games played per season, age, injury history, total minutes, starter/bench, draft pick
+
+## Severity- stats per 100 poss
+- gamma or tweedie
+- points, usage rate, fg%, ft%, starter/bench, position, draft pick
+
