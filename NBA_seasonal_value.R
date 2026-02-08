@@ -16,3 +16,6 @@ player_totals <- raw_data
   filter(games_played > 10) # Actuarial 'credibility' threshold
 
 head(player_totals)
+
+## first model
+
