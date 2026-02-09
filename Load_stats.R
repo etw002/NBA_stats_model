@@ -16,7 +16,9 @@ year_played_data <- select(year_played_data,c(-TO_YEAR,-FROM_YEAR))
 #injury history
 dnp_why <-select(boxscore_raw_data,did_not_play,reason)
 #total minutes
-
+total_minutes_data <-select(boxscore_raw_data,athlete_id,athlete_display_name,minutes)
 #starter/bench
-
+starter_data <-select(boxscore_raw_data,athlete_id,athlete_display_name,starter)
 #draft pick
+
+  
