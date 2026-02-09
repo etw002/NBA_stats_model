@@ -19,7 +19,18 @@ year_played_data <- allplayers_raw_data %>%
   select(PERSON_ID,DISPLAY_FIRST_LAST,years_played)
 
 #injury history
-dnp_why <-select(boxscore_raw_data,did_not_play,reason)
+dnp_why <-boxscore_raw_data %>%
+  filter(did_not_play==TRUE, reason!="COACH'S DECISION") %>%
+  #filter out suspension and logistical issues
+  filter(reason!="SUSPENDED BY LEAGUE",
+         reason!="NOT WITH TEAM",
+         reason!="DID NOT DRESS",
+         reason!="TRADE PENDING",
+         reason!="SUSPENDED BY TEAM",) %>% 
+  select(athlete_id,athlete_display_name,did_not_play,reason) %>%
+  group_by(athlete_id,athlete_display_name) %>%
+  summarize(games_missed_injury=sum(did_not_play,na.rm=TRUE)) %>%
+  ungroup()
 
 
 #total minutes, fouls, games started, games played
