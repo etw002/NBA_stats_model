@@ -2,23 +2,33 @@
 library("hoopR")
 library("tidyverse")
 
+SEASON = 2023
+
 # 1. Get player data
-boxscore_raw_data <- load_nba_player_box(seasons=2023)
-frequency_data2023 <- select(boxscore_raw_data,athlete_id,athlete_display_name,team_name,minutes,starter)
-allplayers_raw_data <- nba_commonallplayers(season = 2023)[[1]]
+boxscore_raw_data <- load_nba_player_box(seasons=SEASON)
+allplayers_raw_data <- nba_commonallplayers(season = SEASON)[[1]]
 #sum games
 
 # get years played
-year_played_data <- select(allplayers_raw_data,PERSON_ID,DISPLAY_FIRST_LAST,FROM_YEAR,TO_YEAR)
-year_played_data <- mutate(year_played_data,years_played=as.numeric(TO_YEAR) - as.numeric(FROM_YEAR))
-year_played_data <- select(year_played_data,c(-TO_YEAR,-FROM_YEAR))
+year_played_data <- allplayers_raw_data %>%
+  mutate(
+    startyear=as.numeric(FROM_YEAR,na.rm=TRUE),
+    endyear=pmin(as.numeric(TO_YEAR,na.rm=TRUE),SEASON),
+    years_played=pmax(endyear-startyear,0)
+    ) %>%
+  select(PERSON_ID,DISPLAY_FIRST_LAST,years_played)
 
 #injury history
 dnp_why <-select(boxscore_raw_data,did_not_play,reason)
-#total minutes
-total_minutes_data <-select(boxscore_raw_data,athlete_id,athlete_display_name,minutes)
-#starter/bench
-starter_data <-select(boxscore_raw_data,athlete_id,athlete_display_name,starter)
-#draft pick
 
-  
+
+#total minutes, fouls, games started, games played
+player_totals <- boxscore_raw_data %>%
+  group_by(athlete_id, athlete_display_name) %>% 
+  summarize(
+    total_minutes = sum(minutes, na.rm = TRUE),
+    total_fouls = sum(fouls,na.rm = TRUE),
+    total_games_started = sum(starter,na.rm = TRUE),
+    games_played  = n()
+  ) %>%
+  ungroup()
