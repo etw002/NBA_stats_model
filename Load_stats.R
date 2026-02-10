@@ -5,7 +5,8 @@ library("tidyverse")
 SEASON = 2023
 
 # 1. Get player data
-boxscore_raw_data <- load_nba_player_box(seasons=SEASON)
+boxscore_raw_data <- load_nba_player_box(seasons=SEASON) %>%
+  filter(season_type==2)
 allplayers_raw_data <- nba_commonallplayers(season = SEASON)[[1]]
 #sum games
 
@@ -40,6 +41,6 @@ player_totals <- boxscore_raw_data %>%
     total_minutes = sum(minutes, na.rm = TRUE),
     total_fouls = sum(fouls,na.rm = TRUE),
     total_games_started = sum(starter,na.rm = TRUE),
-    games_played  = n()
+    games_played  = sum(did_not_play==FALSE,na.rm=TRUE)
   ) %>%
   ungroup()

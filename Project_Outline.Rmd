@@ -10,6 +10,8 @@ date: "2026-02-08"
 - negative binomial or poisson glm
 - predictors - games played per season(sum of games/82), year played(to - from), injury history(dnp & reason=injury), total minutes, starter/bench, fouls
 
+removing season_type - 2(regular season),3(play-in),5(playoffs)
+
 ## Severity- stats per 100 poss
 - gamma or tweedie
 - points, usage rate, fg%, ft%, starter/bench, position, draft pick
