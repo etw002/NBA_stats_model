@@ -1,6 +1,7 @@
 #load packages
 library("hoopR")
 library("tidyverse")
+library("stringi")
 
 SEASON = 2023
 
@@ -27,7 +28,8 @@ dnp_why <-boxscore_raw_data %>%
          reason!="NOT WITH TEAM",
          reason!="DID NOT DRESS",
          reason!="TRADE PENDING",
-         reason!="SUSPENDED BY TEAM",) %>% 
+         reason!="SUSPENDED BY TEAM",
+  ) %>% 
   select(athlete_id,athlete_display_name,did_not_play,reason) %>%
   group_by(athlete_id,athlete_display_name) %>%
   summarize(games_missed_injury=sum(did_not_play,na.rm=TRUE)) %>%
@@ -44,3 +46,47 @@ player_totals <- boxscore_raw_data %>%
     games_played  = sum(did_not_play==FALSE,na.rm=TRUE)
   ) %>%
   ungroup()
+
+#Clean tables
+year_played_clean <- year_played_data %>%
+  rename(athlete_display_name = DISPLAY_FIRST_LAST) %>%
+  mutate(athlete_display_name = str_trim(athlete_display_name)) %>%
+  mutate(
+    athlete_display_name = stri_trans_general(athlete_display_name,"Latin-ASCII")
+    )
+
+player_totals_clean <- player_totals %>%
+  mutate(
+    athlete_display_name = stri_trans_general(athlete_display_name,
+                                              "Latin-ASCII")
+    ) %>%
+  mutate(athlete_display_name = str_trim(athlete_display_name))
+
+dnp_why_clean <- dnp_why %>%
+  mutate(
+    athlete_display_name = stri_trans_general(athlete_display_name,
+                                              "Latin-ASCII")
+    ) %>%
+  mutate(athlete_display_name = str_trim(athlete_display_name))
+
+#Join the tables
+modeling_data <- player_totals_clean %>%
+  left_join(year_played_clean, by = "athlete_display_name") %>%
+  left_join(
+    dnp_why_clean %>% select(athlete_id, games_missed_injury), 
+    by = "athlete_id"
+  ) %>%
+  
+  #Clean up
+  mutate(
+    games_missed_injury = replace_na(games_missed_injury, 0),
+    years_played = replace_na(years_played, 0)
+  ) %>%
+  select(athlete_display_name,
+         total_minutes,
+         total_fouls,
+         total_games_started,
+         games_played,
+         years_played,
+         games_missed_injury
+  )
