@@ -90,3 +90,5 @@ modeling_data <- player_totals_clean %>%
          years_played,
          games_missed_injury
   )
+
+saveRDS(modeling_data, "Games_played_model_data.rds")
