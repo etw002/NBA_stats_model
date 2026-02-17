@@ -91,4 +91,4 @@ modeling_data <- player_totals_clean %>%
          games_missed_injury
   )
 
-saveRDS(modeling_data, "Games_played_model_data.rds")
+saveRDS(gp_modeling_data, "Games_played_model_data.rds")
