@@ -4,7 +4,7 @@ output: html_document
 date: "2026-02-08"
 ---
 ## Model
-- games played(frequency) $\times$ stats per game(severity) = total points per season
+- games played(frequency) $\times$ points per game(severity) = total points per season
 
 ## frequency - games played
 - negative binomial or poisson glm
@@ -12,7 +12,7 @@ date: "2026-02-08"
 
 removing season_type - 2(regular season),3(play-in),5(playoffs)
 
-## Severity- points per 100 poss
+## Severity- points per game
 - gamma or tweedie
 - points, usage rate, fg%, ft%, starter/bench, position
 - usage rate formula - 100 * ((Player FGA+0.44*PlayerFTA+PlayerTO)*Teamminutes/5)

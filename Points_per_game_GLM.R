@@ -2,20 +2,21 @@
 library("hoopR")
 library("tidyverse")
 library("stringi")
+library("MASS")
 
-df <- readRDS("Stats_per_game_model_data.rds")
+
+df <- readRDS("Points_per_game_model_data.rds")
 
 
 # replace no ft games with league average
 df_glm <- df %>%
   mutate(ft = replace_na(ft, mean(ft, na.rm = TRUE)))
 
-#Binomial GLM
-availability_model <- glm(
-  cbind(games_played, games_missed) ~ total_minutes + total_fouls + 
-    total_games_started + years_played + games_missed_injury,
-  family = binomial(link = "logit"),
+points_model <- glm.nb(
+  points ~ usage_rate + fg + ft + athlete_position_abbreviation
+  + starter,
   data = df_glm
 )
 
-summary(availability_model)
+# 3. Check the results
+summary(points_model)
