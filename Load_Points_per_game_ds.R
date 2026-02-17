@@ -46,8 +46,8 @@ usage_data <- boxscore_raw_data %>%
   ) %>%
   select(game_id,athlete_display_name,usage_rate,player_poss,team_poss,minutes,team_minutes)
 
-spg_modeling_data <- stats_ds %>%
+ppg_modeling_data <- stats_ds %>%
   left_join(usage_data, by = c("game_id","athlete_display_name")) %>%
   select(game_id,athlete_display_name, points, usage_rate, fg, ft, starter, 
          athlete_position_abbreviation)
-saveRDS(spg_modeling_data, "Stats_per_game_model_data.rds")
+saveRDS(ppg_modeling_data, "Points_per_game_model_data.rds")
