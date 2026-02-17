@@ -14,5 +14,7 @@ removing season_type - 2(regular season),3(play-in),5(playoffs)
 
 ## Severity- stats per 100 poss
 - gamma or tweedie
-- points, usage rate, fg%, ft%, starter/bench, position, draft pick
+- points, usage rate, fg%, ft%, starter/bench, position
+- usage rate formula - 100 * ((Player FGA+0.44*PlayerFTA+PlayerTO)*Teamminutes/5)
+/(TeamFGA+0.44*TeamFTA+TeamTO)*playerminutes)
 
