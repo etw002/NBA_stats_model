@@ -18,5 +18,4 @@ points_model <- glm.nb(
   data = df_glm
 )
 
-# 3. Check the results
 summary(points_model)

@@ -18,3 +18,15 @@ removing season_type - 2(regular season),3(play-in),5(playoffs)
 - usage rate formula - 100 * ((Player FGA+0.44*PlayerFTA+PlayerTO)*Teamminutes/5)
 /(TeamFGA+0.44*TeamFTA+TeamTO)*playerminutes)
 
+# workflow
+## Data cleaning
+- Severity_datacleaning
+- Frequency_dataclenaing
+
+## Modeling
+- Severity_GLM
+- Frequency_GLM
+
+## Simulation
+- Simulation
+
